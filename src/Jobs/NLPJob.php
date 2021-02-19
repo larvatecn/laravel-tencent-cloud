@@ -16,7 +16,7 @@ use Illuminate\Queue\SerializesModels;
 use Larva\TencentCloud\Jobs\Middleware\NLPRateLimited;
 
 /**
- * Class NLPJob
+ * 自然语言处理
  * @author Tongle Xu <xutongle@gmail.com>
  */
 abstract class NLPJob implements ShouldQueue
