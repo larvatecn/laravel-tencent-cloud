@@ -51,7 +51,7 @@ class ApiGateway
      * @param string $secretId
      * @param string $secretKey
      */
-    public function __construct($baseUrl, $secretId, $secretKey)
+    public function __construct(string $baseUrl, string $secretId, string $secretKey)
     {
         $this->baseUrl = $baseUrl;
         $this->secretId = $secretId;
@@ -65,7 +65,7 @@ class ApiGateway
      * @return \Illuminate\Http\Client\Response
      * @throws Exception
      */
-    public function get($url, $query = null)
+    public function get(string $url, $query = null)
     {
         return Http::withHeaders($this->getSignatureHeaders())->get($url, $query);
     }
@@ -77,7 +77,7 @@ class ApiGateway
      * @return \Illuminate\Http\Client\Response
      * @throws Exception
      */
-    public function post($url, array $data = [])
+    public function post(string $url, array $data = [])
     {
         return Http::withHeaders($this->getSignatureHeaders())->post($url, $data);
     }
@@ -87,7 +87,7 @@ class ApiGateway
      * @return array
      * @throws Exception
      */
-    public function getSignatureHeaders()
+    public function getSignatureHeaders(): array
     {
         $headers = [];
         $headers['Date'] = gmdate($this->dateTimeFormat);

@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Facade;
  * Class TencentCloud
  *
  * @mixin TencentCloudManage
- *
+ * @method static mixed with($driver)
  * @author Tongle Xu <xutongle@gmail.com>
  */
 class TencentCloud extends Facade

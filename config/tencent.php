@@ -7,7 +7,7 @@ return [
     'region' => '',//默认地域
 
     'drivers' => [
-        'api' => [
+        'api' => [//API网关
             'base_url' => '',
             'secret_id' => '',
             'secret_key' => '',

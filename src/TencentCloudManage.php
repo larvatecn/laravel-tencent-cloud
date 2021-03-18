@@ -10,6 +10,7 @@ namespace Larva\TencentCloud;
 
 use Illuminate\Support\Manager;
 use InvalidArgumentException;
+use JetBrains\PhpStorm\Pure;
 use TencentCloud\Common\Credential;
 
 /**
@@ -45,7 +46,7 @@ class TencentCloudManage extends Manager
      * @param array $config
      * @return Credential
      */
-    protected function getCredential(array $config)
+    protected function getCredential(array $config): Credential
     {
         return new Credential($config['secret_id'], $config['secret_key']);
     }
@@ -56,7 +57,7 @@ class TencentCloudManage extends Manager
      * @param string $driver
      * @return mixed
      */
-    public function with($driver)
+    public function with(string $driver)
     {
         return $this->driver($driver);
     }
@@ -70,14 +71,14 @@ class TencentCloudManage extends Manager
      */
     public function getDefaultDriver()
     {
-        throw new InvalidArgumentException('No Tencent Cloud driver was specified.');
+        throw new InvalidArgumentException('No driver was specified.');
     }
 
     /**
      * API 网关客户端服务
      * @return ApiGateway
      */
-    public function createApiDriver()
+    public function createApiDriver(): ApiGateway
     {
         $config = $this->getConfig('api');
         return new ApiGateway($config['base_url'], $config['secret_id'], $config['secret_key']);
