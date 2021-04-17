@@ -46,11 +46,6 @@ class ApiGateway
     private $secretKey;
 
     /**
-     * @var \Illuminate\Http\Client\PendingRequest
-     */
-    private $http;
-
-    /**
      * ApiGateway constructor.
      * @param string $baseUrl
      * @param string|null $secretId
@@ -61,12 +56,6 @@ class ApiGateway
         $this->baseUrl = $baseUrl;
         $this->secretId = $secretId;
         $this->secretKey = $secretKey;
-        $this->http = Http::baseUrl($this->baseUrl);
-        if (!empty($this->secretId) && !empty($this->secretKey)) {
-            $this->http = Http::baseUrl($this->baseUrl)->withHeaders($this->getSignatureHeaders());
-        } else {
-            $this->http = Http::baseUrl($this->baseUrl);
-        }
     }
 
     /**
@@ -78,7 +67,7 @@ class ApiGateway
      */
     public function get(string $url, $query = null)
     {
-        return $this->http->get($url, $query);
+        return Http::baseUrl($this->baseUrl)->withHeaders($this->getSignatureHeaders())->get($url, $query);
     }
 
     /**
@@ -90,16 +79,7 @@ class ApiGateway
      */
     public function post(string $url, array $data = [])
     {
-        return $this->http->post($url, $data);
-    }
-
-    /**
-     * 获取 Http 客户端
-     * @return \Illuminate\Http\Client\PendingRequest
-     */
-    public function getHttpClient()
-    {
-        return $this->http;
+        return Http::baseUrl($this->baseUrl)->withHeaders($this->getSignatureHeaders())->post($url, $data);
     }
 
     /**
