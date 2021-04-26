@@ -90,7 +90,7 @@ class CDNPushUrlsCacheJob implements ShouldQueue
         $req->setArea($this->area);
         try {
             /** @var CdnClient $client */
-            $client = TencentCloud::get('cdn');
+            $client = TencentCloud::cdn();
             $client->PushUrlsCache($req);
         } catch (\Exception $exception) {
 

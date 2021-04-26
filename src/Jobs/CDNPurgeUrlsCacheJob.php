@@ -82,7 +82,7 @@ class CDNPurgeUrlsCacheJob implements ShouldQueue
         $req->setUrls($this->urls);
         try {
             /** @var CdnClient $client */
-            $client = TencentCloud::get('cdn');
+            $client = TencentCloud::cdn();
             $client->PurgeUrlsCache($req);
         } catch (\Exception $exception) {
 
