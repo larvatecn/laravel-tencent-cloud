@@ -12,8 +12,8 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Log;
 use Larva\TencentCloud\TencentCloud;
-use TencentCloud\Cdn\V20180606\CdnClient;
 use TencentCloud\Cdn\V20180606\Models\PurgePathCacheRequest;
 
 /**
@@ -48,33 +48,7 @@ class CDNPurgePathCacheJob implements ShouldQueue
         } else {
             $this->paths = $paths;
         }
-        foreach ($this->paths as $key => $path) {
-            $path = $this->parseUrl($path);
-            $this->paths[$key] = $path;
-        }
         $this->type = $type;
-    }
-
-    /**
-     * 解析Url
-     * @param string $url
-     * @return mixed|string
-     */
-    public function parseUrl($url)
-    {
-        $u = parse_url($url);
-        if ($u) {
-            $url = $u['host'];
-            if (!isset($u['path'])) {
-                $u['path'] = '/';
-            }
-            $url = $url . $u['path'];
-            if (isset($u['query'])) {
-                $url = $url . $u['query'];
-            }
-            return $url;
-        }
-        return $url;
     }
 
     /**
@@ -86,13 +60,12 @@ class CDNPurgePathCacheJob implements ShouldQueue
     public function handle()
     {
         $req = new PurgePathCacheRequest();
-        $req->setUrls($this->urls);
+        $req->setPaths($this->paths);
         try {
-            /** @var CdnClient $client */
             $client = TencentCloud::cdn();
-            $client->PurgeUrlsCache($req);
+            $client->PurgePathCache($req);
         } catch (\Exception $exception) {
-
+            Log::error($exception->getMessage());
         }
     }
 }

@@ -12,8 +12,8 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Log;
 use Larva\TencentCloud\TencentCloud;
-use TencentCloud\Cdn\V20180606\CdnClient;
 use TencentCloud\Cdn\V20180606\Models\PushUrlsCacheRequest;
 
 /**
@@ -48,34 +48,9 @@ class CDNPushUrlsCacheJob implements ShouldQueue
         } else {
             $this->urls = $urls;
         }
-        foreach ($this->urls as $key => $url) {
-            $url = $this->parseUrl($url);
-            $this->urls[$key] = $url;
-        }
         $this->area = $area;
     }
 
-    /**
-     * 解析Url
-     * @param string $url
-     * @return mixed|string
-     */
-    public function parseUrl($url)
-    {
-        $u = parse_url($url);
-        if ($u) {
-            $url = $u['host'];
-            if (!isset($u['path'])) {
-                $u['path'] = '/';
-            }
-            $url = $url . $u['path'];
-            if (isset($u['query'])) {
-                $url = $url . $u['query'];
-            }
-            return $url;
-        }
-        return $url;
-    }
 
     /**
      * Execute the job.
@@ -89,11 +64,10 @@ class CDNPushUrlsCacheJob implements ShouldQueue
         $req->setUrls($this->urls);
         $req->setArea($this->area);
         try {
-            /** @var CdnClient $client */
             $client = TencentCloud::cdn();
             $client->PushUrlsCache($req);
         } catch (\Exception $exception) {
-
+            Log::error($exception->getMessage());
         }
     }
 }
