@@ -145,6 +145,16 @@ class TencentCloudManage extends Manager
     }
 
     /**
+     * 日志服务
+     * @return \TencentCloud\Cls\V20201016\ClsClient
+     */
+    public function createClsDriver()
+    {
+        $config = $this->getConfig('cls');
+        return new \TencentCloud\Cls\V20201016\ClsClient($this->getCredential($config), $config['region']);
+    }
+
+    /**
      * 点播 服务
      * @return \TencentCloud\Vod\V20180717\VodClient
      */

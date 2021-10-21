@@ -24,7 +24,7 @@ class TencentCloud extends Facade
      *
      * @return string
      */
-    protected static function getFacadeAccessor()
+    protected static function getFacadeAccessor(): string
     {
         return TencentCloudManage::class;
     }
@@ -90,6 +90,15 @@ class TencentCloud extends Facade
     public static function cdn()
     {
         return static::getFacadeRoot()->with('cdn');
+    }
+
+    /**
+     * 获取 CLS
+     * @return \TencentCloud\Cls\V20201016\ClsClient
+     */
+    public static function cls()
+    {
+        return static::getFacadeRoot()->with('cls');
     }
 
     /**
