@@ -95,6 +95,16 @@ class TencentCloudManage extends Manager
     }
 
     /**
+     * 账单
+     * @return \TencentCloud\Billing\V20180709\BillingClient
+     */
+    public function createBillingayDriver()
+    {
+        $config = $this->getConfig('billingay');
+        return new \TencentCloud\Billing\V20180709\BillingClient($this->getCredential($config), $config['region']);
+    }
+
+    /**
      * yunsou 服务
      * @return \TencentCloud\Yunsou\V20191115\YunsouClient
      */

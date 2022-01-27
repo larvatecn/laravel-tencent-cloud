@@ -39,6 +39,15 @@ class TencentCloud extends Facade
     }
 
     /**
+     * 获取 账单
+     * @return \TencentCloud\Billing\V20180709\BillingClient
+     */
+    public static function billingay()
+    {
+        return static::getFacadeRoot()->with('billingay');
+    }
+
+    /**
      * 获取 NLP
      * @return \TencentCloud\Nlp\V20190408\NlpClient
      */
